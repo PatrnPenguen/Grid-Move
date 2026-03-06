@@ -12,6 +12,9 @@ public class GameOverUI : MonoBehaviour
 
     private void Start()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.StopMusic();
+        
         int lastScore = PlayerPrefs.GetInt("LAST_SCORE", 0);
         int bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
 
@@ -24,11 +27,17 @@ public class GameOverUI : MonoBehaviour
 
     public void RestartPressed()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMusic();
+        
         SceneManager.LoadScene("Game");
     }
 
     public void MainMenuPressed()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMusic();
+        
         SceneManager.LoadScene("MainMenu");
     }
 

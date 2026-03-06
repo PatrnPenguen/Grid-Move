@@ -1,0 +1,91 @@
+# =========================
+# Unity / Visual Studio
+# =========================
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Unity cache & generated
+[Dd]erivedDataCache/
+
+# Addressables cache (optional)
+[Aa]ssets/[Aa]ddressableAssetsData/*/*.bin*
+
+# =========================
+# IDE / OS files
+# =========================
+
+# VS / Rider / VSCode
+.vs/
+.idea/
+.vscode/
+*.sln
+*.csproj
+*.unityproj
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =========================
+# Unity generated meta for folders (keep .meta generally!)
+# =========================
+# (Unity needs .meta files; DO NOT ignore *.meta globally.)
+
+# =========================
+# Crash/Log files
+# =========================
+*.log
+*.stackdump
+
+# =========================
+# Packages
+# =========================
+# Usually you DO commit Packages/manifest.json and packages-lock.json
+# So we do NOT ignore Packages/ by default.
+
+# =========================
+# IL2CPP / Gradle / Android
+# =========================
+# If you export Android builds inside project
+**/Android/.gradle/
+**/Android/gradle/
+**/Android/gradlew
+**/Android/gradlew.bat
+**/Android/local.properties
+
+# =========================
+# Unity Collaborate (if present)
+# =========================
+.collab/
+
+# =========================
+# JetBrains Rider plugin
+# =========================
+*.sln.iml
+
+# =========================
+# Optional: ignore build artifacts from common folders
+# =========================
+*.apk
+*.aab
+*.app
+*.exe
+*.ipa

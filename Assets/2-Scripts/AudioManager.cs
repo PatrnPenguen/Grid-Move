@@ -77,6 +77,22 @@ public class AudioManager : MonoBehaviour
         PlayerPrefs.SetFloat(SfxKey, sfxSource.volume);
     }
 
+    public void PlayMusic()
+    {
+        if (!musicSource) return;
+        if (musicSource.clip == null) return;
+        if (musicSource.volume <= 0.001f) return;
+
+        if (!musicSource.isPlaying)
+            musicSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        if (!musicSource) return;
+        musicSource.Stop();
+    }
+
     // Optional: call once for debugging
     public void ResetToDefaults()
     {

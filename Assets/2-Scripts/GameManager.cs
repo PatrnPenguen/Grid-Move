@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text scoreText;
+    public TMP_Text bestScoreText;
     public TMP_Text gameOverText;
     
     [Header("Level Popup UI")]
@@ -75,6 +76,8 @@ public class GameManager : MonoBehaviour
     public float shakeStrength = 0.12f;
     
     private Coroutine gameOverRoutine;
+    
+    private const string BestScoreKey = "BEST_SCORE";
     private void Awake()
     {
         Instance = this;
@@ -99,6 +102,12 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
 
         score += amount;
+
+        int currentBest = PlayerPrefs.GetInt(BestScoreKey, 0);
+        if (score > currentBest)
+        {
+            PlayerPrefs.SetInt(BestScoreKey, score);
+        }
 
         int newLevel = (score / 10) + 1;
 
@@ -153,6 +162,10 @@ public class GameManager : MonoBehaviour
         // Stop spawning immediately
         if (enemySpawnRoutine != null) StopCoroutine(enemySpawnRoutine);
 
+        // Stop background music immediately
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.StopMusic();
+
         // Optional: hide player so explosion is clearer
         if (playerTransform != null)
         {
@@ -162,23 +175,19 @@ public class GameManager : MonoBehaviour
             var col = playerTransform.GetComponent<Collider2D>();
             if (col != null) col.enabled = false;
         }
-        
+    
         if (cameraShake != null)
             cameraShake.Shake(shakeDuration, shakeStrength);
-        
+    
         if (SfxPlayer.Instance != null) SfxPlayer.Instance.PlayHit();
-        
+    
         // Spawn explosion
         if (explosionPrefab != null)
             Instantiate(explosionPrefab, hitWorldPos, Quaternion.identity);
-        
-        // Show GAME OVER after delay
-        PlayerPrefs.SetInt("LAST_SCORE", score); // score değişkenin sende zaten var
+    
+        // Save score and go to GameOver scene after delay
+        PlayerPrefs.SetInt("LAST_SCORE", score);
         StartCoroutine(LoadGameOverAfterDelay());
-        
-        // Game Over in Game Scene
-        // if (gameOverRoutine != null) StopCoroutine(gameOverRoutine);
-        // gameOverRoutine = StartCoroutine(GameOverTextSequence());
     }
     
     private IEnumerator LoadGameOverAfterDelay()
@@ -202,7 +211,12 @@ public class GameManager : MonoBehaviour
     private void UpdateUI()
     {
         if (scoreText != null)
-            scoreText.text = $"Score: {score}";
+            scoreText.text = $"{score}";
+
+        int bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
+
+        if (bestScoreText != null)
+            bestScoreText.text = $"Best: {bestScore}";
     }
 
     // ---------- Collectible spawn (with forbidden area) ----------
@@ -240,6 +254,14 @@ public class GameManager : MonoBehaviour
 
         Vector2Int chosen = allowed[Random.Range(0, allowed.Count)];
         currentCollectible = Instantiate(collectiblePrefab, new Vector3(chosen.x, chosen.y, 0f), Quaternion.identity);
+
+        bool isPreLevelUpCollectible = (score % 10 == 9);
+
+        Collectible collectible = currentCollectible.GetComponent<Collectible>();
+        if (collectible != null)
+        {
+            collectible.SetPreLevelUpState(isPreLevelUpCollectible);
+        }
     }
 
     private Vector2Int GetPlayerCell()

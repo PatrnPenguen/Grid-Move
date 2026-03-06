@@ -6,11 +6,20 @@ public class GameOverUI : MonoBehaviour
 {
     public SettingsPanelUI settingsUI;
     public TMP_Text scoreText;
+    public TMP_Text bestScoreText;
+
+    private const string BestScoreKey = "BEST_SCORE";
 
     private void Start()
     {
         int lastScore = PlayerPrefs.GetInt("LAST_SCORE", 0);
-        if (scoreText != null) scoreText.text = $"Score: {lastScore}";
+        int bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
+
+        if (scoreText != null)
+            scoreText.text = $"Score: {lastScore}";
+
+        if (bestScoreText != null)
+            bestScoreText.text = $"Best: {bestScore}";
     }
 
     public void RestartPressed()
